@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function getRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && (
+        getRole() == 'admin' || 
+        request.auth.token.email == 'hasaoah@gmail.com'
+      );
+    }
+    
+    function isSupervisor() {
+      return isAuthenticated() && (getRole() == 'supervisor' || isAdmin());
+    }
+
+    // User rules
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Meal rules
+    match /meals/{mealId} {
+      allow read: if isAuthenticated() && (
+        resource.data.studentId == request.auth.uid || 
+        isSupervisor()
+      );
+      allow create: if isSupervisor();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

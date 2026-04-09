@@ -1,0 +1,44 @@
+{
+  "entities": {
+    "users": {
+      "title": "User",
+      "description": "System users including students, supervisors, and admins",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "supervisor", "student"] },
+        "studentId": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "meals": {
+      "title": "Meal Log",
+      "description": "Records of meals served to students",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "studentIdNum": { "type": "string" },
+        "supervisorId": { "type": "string" },
+        "mealType": { "type": "string", "enum": ["breakfast", "lunch", "dinner"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "date": { "type": "string", "format": "date" }
+      },
+      "required": ["studentId", "mealType", "timestamp", "date"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "users",
+      "description": "User profiles"
+    },
+    "/meals/{mealId}": {
+      "schema": "meals",
+      "description": "Meal tracking logs"
+    }
+  }
+}

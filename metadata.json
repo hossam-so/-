@@ -1,0 +1,5 @@
+{
+  "name": "Nobles Dormitory Kitchen",
+  "description": "A management system for university dormitory meals, including nutrition card generation with barcodes and a supervisor scanner for meal tracking.",
+  "requestFramePermissions": ["camera"]
+}
