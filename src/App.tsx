@@ -49,6 +49,8 @@ import {
   RotateCcw,
   Wifi,
   WifiOff,
+  Smartphone,
+  Copy,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { db, isFirebaseConfigured } from './firebase';
@@ -2056,10 +2058,21 @@ Date: ${today}`;
           </div>
           
           <div className="flex items-center gap-3">
+            {isOnline ? (
+              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full border border-emerald-100 dark:border-emerald-500/20">
+                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span className="text-[10px] font-black font-arabic">متصل سحابياً</span>
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full border border-red-100 dark:border-red-500/20">
+                <div className="w-1.5 h-1.5 bg-red-500 rounded-full"></div>
+                <span className="text-[10px] font-black font-arabic">وضع الأوفلاين</span>
+              </div>
+            )}
             {isOfflineReady && (
-              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full border border-emerald-100 dark:border-emerald-500/20 animate-pulse">
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-                <span className="text-[10px] font-black font-arabic">جاهز للعمل بدون إنترنت</span>
+              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full border border-blue-100 dark:border-blue-500/20">
+                <Smartphone size={12} />
+                <span className="text-[10px] font-black font-arabic">جاهز للتثبيت</span>
               </div>
             )}
             <button 
@@ -2222,8 +2235,8 @@ Date: ${today}`;
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12 no-print">
-                <div className={`flex flex-col gap-2 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+              <div className="flex flex-col items-center justify-center text-center gap-4 mb-12 no-print">
+                <div className="flex flex-col gap-2">
                   <h2 className="text-3xl md:text-4xl font-black text-primary dark:text-slate-100 font-arabic">{language === 'ar' ? 'لوحة التحكم - المطبخ' : 'Kitchen Dashboard'}</h2>
                   <p className="text-slate-400 dark:text-slate-500 font-bold font-arabic">{language === 'ar' ? 'إدارة الطلاب، المسح الضوئي، ومتابعة السجلات' : 'Manage students, scanning, and logs'}</p>
                 </div>
@@ -2266,8 +2279,8 @@ Date: ${today}`;
               <div className="bg-beige-50 dark:bg-slate-800 p-8 md:p-12 rounded-[3rem] border border-slate-200 dark:border-slate-700 shadow-2xl shadow-slate-200/30 dark:shadow-black/20 no-print relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-accent to-primary"></div>
                 
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-10">
-                  <div className="flex items-center gap-5">
+                <div className="flex flex-col items-center justify-center text-center gap-6 mb-10">
+                  <div className="flex flex-col items-center gap-4">
                     <div className="w-14 h-14 bg-white dark:bg-slate-900 rounded-2xl flex items-center justify-center border border-slate-100 dark:border-slate-700 shadow-inner">
                       <Plus size={32} className="text-primary dark:text-accent" />
                     </div>
@@ -2277,7 +2290,7 @@ Date: ${today}`;
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-center gap-4">
                     <label className="cursor-pointer bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-8 py-4 rounded-2xl font-black hover:border-primary/30 hover:shadow-lg transition-all flex items-center justify-center gap-3 group">
                       <FileUp size={22} className="group-hover:text-primary transition-colors" />
                       <span className="font-arabic">استيراد إكسل</span>
@@ -2291,8 +2304,8 @@ Date: ${today}`;
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-2 space-y-4">
+                <div className="flex flex-col items-center justify-center text-center gap-8">
+                  <div className="w-full max-w-3xl space-y-4">
                     <label className="text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] font-display">Student Name / اسم الطالب:</label>
                     <div className="flex flex-col sm:flex-row gap-4">
                       <input 
@@ -2301,7 +2314,7 @@ Date: ${today}`;
                         onChange={(e) => setNewStudentName(e.target.value)}
                         placeholder="أدخل اسم الطالب بالكامل..."
                         dir={language === 'ar' ? 'rtl' : 'ltr'}
-                        className="flex-1 px-8 py-5 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-primary transition-all text-xl font-black font-arabic placeholder:text-slate-300 dark:placeholder:text-slate-600"
+                        className="flex-1 px-8 py-5 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-primary transition-all text-xl font-black font-arabic placeholder:text-slate-300 dark:placeholder:text-slate-600 text-center"
                         onKeyPress={(e) => e.key === 'Enter' && addStudent()}
                       />
                       <button 
@@ -2314,7 +2327,7 @@ Date: ${today}`;
                     </div>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="w-full max-w-md space-y-4">
                     <label className="text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] font-display">Department / القسم:</label>
                     <div className="grid grid-cols-2 gap-4 bg-white dark:bg-slate-900 p-2 rounded-2xl border-2 border-slate-100 dark:border-slate-700">
                       <button 
@@ -2802,13 +2815,13 @@ Date: ${today}`;
               className="space-y-10"
             >
               {/* Finance Header */}
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8 no-print">
+              <div className="flex flex-col items-center justify-center text-center gap-6 mb-10 no-print">
                 <div className="flex flex-col gap-2">
                   <h2 className="text-3xl md:text-4xl font-black text-primary dark:text-slate-100 font-arabic">الشؤون المالية</h2>
                   <p className="text-slate-600 dark:text-slate-500 font-bold font-arabic">إدارة الاشتراكات الشهرية ومتابعة التحصيل المالي</p>
                 </div>
                 
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-wrap items-center justify-center gap-4">
                   <div className="flex items-center gap-3 bg-white dark:bg-slate-900 p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 shadow-sm">
                     <Calendar size={20} className="text-primary" />
                     <select 
@@ -2912,9 +2925,9 @@ Date: ${today}`;
               {/* Add Finance Student Section */}
               <div className="bg-beige-50 dark:bg-slate-800 p-8 md:p-10 rounded-[3rem] border border-slate-200 dark:border-slate-700 shadow-xl no-print relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-accent via-primary to-accent"></div>
-                <div className="flex flex-col md:flex-row gap-6 items-end">
-                  <div className="flex-1 space-y-3">
-                    <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider font-arabic">اسم الطالب:</label>
+                <div className="flex flex-col items-center justify-center text-center gap-6">
+                  <div className="w-full max-w-xl space-y-3">
+                    <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider font-arabic">إضافة طالب جديد للمالية:</label>
                     <div className="relative">
                       <input 
                         type="text" 
@@ -2922,13 +2935,13 @@ Date: ${today}`;
                         onChange={(e) => setNewFinanceName(e.target.value)}
                         placeholder="أدخل اسم الطالب..."
                         dir={language === 'ar' ? 'rtl' : 'ltr'}
-                        className="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-accent transition-all font-black font-arabic"
+                        className="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-accent transition-all font-black font-arabic text-center"
                       />
                     </div>
                   </div>
                   <button 
                     onClick={addFinanceStudent}
-                    className="bg-accent text-primary px-12 py-4 rounded-2xl font-black hover:bg-accent/90 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-xl shadow-accent/20 font-arabic"
+                    className="bg-accent text-primary px-16 py-4 rounded-2xl font-black hover:bg-accent/90 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-xl shadow-accent/20 font-arabic"
                   >
                     <UserPlus size={20} />
                     إضافة طالب
@@ -3296,13 +3309,13 @@ Date: ${today}`;
               className="space-y-10"
             >
               {/* Purchases Header & Summary */}
-              <div className="flex flex-col lg:flex-row gap-8 items-start justify-between">
-                <div className="space-y-2 text-right">
+              <div className="flex flex-col items-center justify-center text-center space-y-4 mb-8">
+                <div className="space-y-2">
                   <h2 className="text-4xl font-black text-primary dark:text-slate-100 font-arabic">قسم المشتريات</h2>
                   <p className="text-slate-600 dark:text-slate-500 font-bold font-arabic">إدارة المشتريات اليومية وأرشفة الفواتير</p>
                 </div>
                 
-                <div className="flex flex-wrap items-center gap-4 w-full lg:w-auto">
+                <div className="flex flex-wrap items-center justify-center gap-4 w-full">
                   <div className="flex items-center gap-3 bg-white dark:bg-slate-900 p-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 shadow-sm">
                     <Calendar size={20} className="text-primary" />
                     <select 
@@ -3412,7 +3425,7 @@ Date: ${today}`;
               {/* Add Purchase Form */}
               <div className="bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-slate-200 dark:border-slate-700 shadow-xl no-print">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
-                  <div className="space-y-3 text-right">
+                  <div className="lg:col-span-2 space-y-3 text-right">
                     <label className="text-sm font-black text-slate-600 dark:text-slate-400 mr-2 font-arabic">اسم المشتريات</label>
                     <input 
                       type="text" 
@@ -3423,55 +3436,56 @@ Date: ${today}`;
                       className="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:border-primary transition-all font-bold font-arabic"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-3 text-right">
-                      <label className="text-sm font-black text-slate-500 dark:text-slate-400 mr-2 font-arabic">سعر الوحدة</label>
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="text" 
-                          inputMode="decimal"
-                          value={newPurchaseUnitPrice}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            const sanitized = val.replace(/[٠١٢٣٤٥٦٧٨٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d).toString())
-                                                 .replace(/[^0-9.]/g, '');
-                            const parts = sanitized.split('.');
-                            if (parts.length <= 2) setNewPurchaseUnitPrice(sanitized);
-                          }}
-                          placeholder="0.00"
-                          dir={language === 'ar' ? 'rtl' : 'ltr'}
-                          className="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-primary transition-all font-bold"
-                        />
-                        <select
-                          value={newPurchaseCurrency}
-                          onChange={(e) => setNewPurchaseCurrency(e.target.value as 'YER' | 'SAR' | 'USD')}
-                          className="px-4 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:border-primary transition-all font-bold text-sm"
-                        >
-                          <option value="YER">ر.ي</option>
-                          <option value="SAR">ر.س</option>
-                          <option value="USD">$</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="space-y-3 text-right">
-                      <label className="text-sm font-black text-slate-500 dark:text-slate-400 mr-2 font-arabic">العدد</label>
+                  
+                  <div className="space-y-3 text-right">
+                    <label className="text-sm font-black text-slate-500 dark:text-slate-400 mr-2 font-arabic">سعر الوحدة</label>
+                    <div className="flex items-center gap-2">
                       <input 
                         type="text" 
                         inputMode="decimal"
-                        value={newPurchaseCount}
+                        value={newPurchaseUnitPrice}
                         onChange={(e) => {
                           const val = e.target.value;
                           const sanitized = val.replace(/[٠١٢٣٤٥٦٧٨٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d).toString())
                                                .replace(/[^0-9.]/g, '');
                           const parts = sanitized.split('.');
-                          if (parts.length <= 2) setNewPurchaseCount(sanitized);
+                          if (parts.length <= 2) setNewPurchaseUnitPrice(sanitized);
                         }}
-                        placeholder="0"
+                        placeholder="0.00"
                         dir={language === 'ar' ? 'rtl' : 'ltr'}
                         className="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-primary transition-all font-bold"
                       />
+                      <select
+                        value={newPurchaseCurrency}
+                        onChange={(e) => setNewPurchaseCurrency(e.target.value as 'YER' | 'SAR' | 'USD')}
+                        className="px-4 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:border-primary transition-all font-bold text-sm"
+                      >
+                        <option value="YER">ر.ي</option>
+                        <option value="SAR">ر.س</option>
+                        <option value="USD">$</option>
+                      </select>
                     </div>
                   </div>
+
+                  <div className="space-y-3 text-right">
+                    <label className="text-sm font-black text-slate-500 dark:text-slate-400 mr-2 font-arabic">العدد</label>
+                    <input 
+                      type="text" 
+                      inputMode="decimal"
+                      value={newPurchaseCount}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        const sanitized = val.replace(/[٠١٢٣٤٥٦٧٨٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d).toString())
+                                             .replace(/[^0-9.]/g, '');
+                        const parts = sanitized.split('.');
+                        if (parts.length <= 2) setNewPurchaseCount(sanitized);
+                      }}
+                      placeholder="0"
+                      dir={language === 'ar' ? 'rtl' : 'ltr'}
+                      className="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-primary transition-all font-bold"
+                    />
+                  </div>
+
                   <div className="space-y-3 text-right">
                     <label className="text-sm font-black text-slate-600 dark:text-slate-400 mr-2 font-arabic">ملاحظات / الكمية</label>
                     <input 
@@ -3483,17 +3497,7 @@ Date: ${today}`;
                       className="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:border-primary transition-all font-bold font-arabic"
                     />
                   </div>
-                  <div className="space-y-3 text-right">
-                    <label className="text-sm font-black text-slate-500 dark:text-slate-400 mr-2 font-arabic">الإجمالي</label>
-                    <div className="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/50 text-primary dark:text-accent font-black text-xl">
-                      {(() => {
-                        let rate = 1;
-                        if (newPurchaseCurrency === 'SAR') rate = exchangeRates.SAR;
-                        if (newPurchaseCurrency === 'USD') rate = exchangeRates.USD;
-                        return (Number(newPurchaseUnitPrice) * Number(newPurchaseCount) * rate).toLocaleString();
-                      })()}
-                    </div>
-                  </div>
+
                   <div className="space-y-3 text-right">
                     <label className="text-sm font-black text-slate-500 dark:text-slate-400 mr-2 font-arabic">التاريخ</label>
                     <div className="relative">
@@ -3506,7 +3510,20 @@ Date: ${today}`;
                       />
                     </div>
                   </div>
-                  <div className="flex gap-3">
+
+                  <div className="space-y-3 text-right">
+                    <label className="text-sm font-black text-slate-500 dark:text-slate-400 mr-2 font-arabic">الإجمالي</label>
+                    <div className="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/50 text-primary dark:text-accent font-black text-xl">
+                      {(() => {
+                        let rate = 1;
+                        if (newPurchaseCurrency === 'SAR') rate = exchangeRates.SAR;
+                        if (newPurchaseCurrency === 'USD') rate = exchangeRates.USD;
+                        return (Number(newPurchaseUnitPrice) * Number(newPurchaseCount) * rate).toLocaleString();
+                      })()}
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-1 flex gap-3">
                     <div className="flex-1 relative">
                       <input 
                         type="file" 
@@ -3770,8 +3787,8 @@ Date: ${today}`;
               className="space-y-10"
             >
               {/* Reports Header */}
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-                <div className="space-y-2 text-right">
+              <div className="flex flex-col items-center justify-center text-center gap-6 mb-10">
+                <div className="space-y-2">
                   <h2 className="text-4xl font-black text-primary dark:text-slate-100 font-arabic">{t.reports}</h2>
                   <p className="text-slate-400 dark:text-slate-500 font-bold font-arabic">{t.managementReport}</p>
                 </div>
@@ -3786,11 +3803,11 @@ Date: ${today}`;
 
               {/* Report Configuration */}
               <div className="bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-slate-200 dark:border-slate-700 shadow-xl space-y-8">
-                <div className="flex items-center gap-4 text-primary">
+                <div className="flex flex-col items-center justify-center gap-4 text-primary mb-6">
                   <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
                     <Calendar size={24} />
                   </div>
-                  <h3 className="text-xl font-black font-arabic">{t.reportPeriod}</h3>
+                  <h3 className="text-xl font-black font-arabic text-center">{t.reportPeriod}</h3>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4 no-print">
@@ -4247,6 +4264,72 @@ Date: ${today}`;
                   </div>
                 )}
 
+                {/* Standalone & Permanent Access */}
+                <div className="space-y-4">
+                  <h4 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest px-2">
+                    {language === 'ar' ? 'الوصول الدائم والمستقل' : 'Permanent & Standalone Access'}
+                  </h4>
+                  <div className="p-5 bg-amber-50 dark:bg-amber-900/20 rounded-3xl border border-amber-100 dark:border-amber-900/30 space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/40 rounded-xl flex items-center justify-center shrink-0">
+                        <Smartphone className="text-amber-600" size={20} />
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs font-black text-slate-800 dark:text-slate-100 font-arabic">
+                          {language === 'ar' ? 'التطبيق يعمل بشكل مستقل' : 'App works independently'}
+                        </p>
+                        <p className="text-[10px] text-slate-500 font-bold leading-relaxed">
+                          {language === 'ar' 
+                            ? 'يمكنك استخدام التطبيق مباشرة عبر الرابط الدائم دون الحاجة لفتح الاستوديو. قم بإضافته للشاشة الرئيسية ليعمل كتطبيق مستقل.' 
+                            : 'You can use the app directly via the permanent link without opening AI Studio. Add it to your home screen to work as a standalone app.'}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">{language === 'ar' ? 'الرابط الدائم:' : 'Permanent Link:'}</p>
+                      <div className="flex items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                        <code className="text-[10px] font-mono text-slate-500 truncate flex-1">{window.location.origin}</code>
+                        <button 
+                          onClick={() => {
+                            navigator.clipboard.writeText(window.location.origin);
+                            alert(language === 'ar' ? 'تم نسخ الرابط' : 'Link copied');
+                          }}
+                          className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                        >
+                          <Copy size={14} className="text-primary" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {!isStandalone && (
+                      <button 
+                        onClick={handleInstallClick}
+                        className="w-full py-3 bg-amber-500 text-white rounded-xl font-black text-xs hover:bg-amber-600 transition-all shadow-lg shadow-amber-500/20 font-arabic"
+                      >
+                        {language === 'ar' ? 'تثبيت التطبيق على الجهاز' : 'Install App on Device'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Firebase Config Info (Optional/Advanced) */}
+                <div className="space-y-4">
+                  <h4 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest px-2">
+                    {language === 'ar' ? 'إعدادات الاتصال (متقدم)' : 'Connection Settings (Advanced)'}
+                  </h4>
+                  <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-3">
+                    <p className="text-[10px] text-slate-500 font-bold leading-relaxed">
+                      {language === 'ar' 
+                        ? 'يتم جلب مفاتيح API تلقائياً من إعدادات الاستوديو. إذا كنت ترغب في تشغيل التطبيق على خادم خاص، يمكنك تعديل ملف src/config.ts.' 
+                        : 'API keys are automatically fetched from Studio settings. If you want to run the app on your own server, you can edit src/config.ts.'}
+                    </p>
+                    <div className="flex items-center gap-2 text-[10px] font-black text-primary">
+                      <div className={`w-2 h-2 rounded-full ${isFirebaseConfigured ? 'bg-emerald-500' : 'bg-red-500'}`}></div>
+                      {isFirebaseConfigured ? (language === 'ar' ? 'مفاتيح API مفعلة' : 'API Keys Active') : (language === 'ar' ? 'مفاتيح API مفقودة' : 'API Keys Missing')}
+                    </div>
+                  </div>
+                </div>
                 {/* Backup & Restore */}
                 <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-4">
                   <div className="flex items-center gap-3 mb-2">
